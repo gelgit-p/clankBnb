@@ -1,9 +1,8 @@
-import { ArrowLeft, ArrowRight, Wallet2, Home, Ruler, BedDouble, Bath, MapPin, Wifi } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {Web3} from 'web3';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccount, WagmiProvider } from 'wagmi';
