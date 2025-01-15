@@ -300,7 +300,13 @@ function App() {
 
           {/* Right Column - Booking Form */}
           <Card className="p-6 space-y-6">
+            <div className='flex justify-between items-center gap-2'>
+
             <h3 className="text-xl font-semibold">Book your stay</h3>
+
+            <p>$CAPITAL0.01</p>
+              </div>
+            
             
             {/* Date Grid */}
             <div className="mb-6">
