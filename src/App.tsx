@@ -1,7 +1,6 @@
 import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -55,7 +54,7 @@ function App() {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [amount, setAmount] = useState<string>('');
-  const [selectedCoin, setSelectedCoin] = useState<string>('');
+  // const [selectedCoin, setSelectedCoin] = useState<string>('');
 
     // Calculate total nights and amount
     const calculateTotalAmount = () => {
@@ -376,6 +375,11 @@ function App() {
           {selectedDate.checkIn && selectedDate.checkOut && (
             <div className="mb-6 p-4 bg-gray-50 rounded-lg">
               <div className="flex justify-between items-center text-sm text-gray-600 mb-2">
+                {/* <span>Check-in:{selectedDate.checkIn.getDate()}</span>
+                <span>Check-out:{selectedDate.checkOut.getDate()}</span> */}
+                <span>Check-in: {selectedDate.checkIn.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                <span>Check-out: {selectedDate.checkOut.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+
                 <span>Total nights:</span>
                 <span className="font-medium">{Math.ceil(Math.abs(selectedDate.checkOut.getTime() - selectedDate.checkIn.getTime()) / (1000 * 60 * 60 * 24)) + 1} nights</span>
               </div>
