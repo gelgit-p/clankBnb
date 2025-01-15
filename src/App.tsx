@@ -1,9 +1,9 @@
-import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccount, WagmiProvider } from 'wagmi';
 import { Account } from './layout/account';
@@ -41,6 +41,7 @@ function ConnectWallet() {
 }
 
 function App() {
+  const PRICE_PER_NIGHT = 0.0452; // Price in USD
 
   const [currentImage, setCurrentImage] = useState(0);
   const [selectedDate, setSelectedDate] = useState<{
@@ -53,8 +54,17 @@ function App() {
 
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  // const [amout, setAmount] = useState<string>('');
-  // const [selectedCoin, setSelectedCoin] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
+  const [selectedCoin, setSelectedCoin] = useState<string>('');
+
+    // Calculate total nights and amount
+    const calculateTotalAmount = () => {
+      if (!selectedDate.checkIn || !selectedDate.checkOut) return 0;
+      
+      const diffTime = Math.abs(selectedDate.checkOut.getTime() - selectedDate.checkIn.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Include both check-in and check-out days
+      return diffDays * PRICE_PER_NIGHT;
+    };
 
   const generateCalendarDays = () => {
     const year = currentDate.getFullYear();
@@ -145,6 +155,14 @@ function App() {
   };
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+   // Update amount when dates are selected
+   useEffect(() => {
+    const totalAmount = calculateTotalAmount();
+    if (totalAmount > 0) {
+      setAmount(totalAmount.toString());
+    }
+  }, [selectedDate.checkIn, selectedDate.checkOut]);
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -290,12 +308,6 @@ function App() {
                 <span>High-Speed WiFi & Smart Home Features</span>
               </div>
             </div>
-
-
-
-            <Button className="w-full" size="lg">
-              BOOK NOW
-            </Button>
           </div>
 
           {/* Right Column - Booking Form */}
@@ -304,7 +316,11 @@ function App() {
 
             <h3 className="text-xl font-semibold">Book your stay</h3>
 
-            <p>$CAPITAL0.01</p>
+            <div className="flex items-center text-xl font-bold text-gray-900">
+              <DollarSign className="w-5 h-5 text-pink-500" />
+              CAPITAL {PRICE_PER_NIGHT}
+              <span className="text-sm font-normal text-gray-600 ml-1">/ night</span>
+            </div>
               </div>
             
             
@@ -356,26 +372,32 @@ function App() {
               ))}
             </div>
           </div>
-            {/* <div className="space-y-4">
-              <label className="text-sm font-medium">Select nights:</label>
-              <div className="grid grid-cols-4 gap-2">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <Button
-                    key={i}
-                    variant="outline"
-                    className="aspect-square"
-                  >
-                    {i + 1}
-                  </Button>
-                ))}
+
+          {selectedDate.checkIn && selectedDate.checkOut && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="flex justify-between items-center text-sm text-gray-600 mb-2">
+                <span>Total nights:</span>
+                <span className="font-medium">{Math.ceil(Math.abs(selectedDate.checkOut.getTime() - selectedDate.checkIn.getTime()) / (1000 * 60 * 60 * 24)) + 1} nights</span>
               </div>
-            </div> */}
+              <div className="flex justify-between items-center text-gray-900">
+                <span className="font-medium">Total amount:</span>
+                <span className="text-lg font-bold">$CAPITAL {calculateTotalAmount()}</span>
+              </div>
+            </div>
+          )}
 
             {/* Payment Details */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Amount:</label>
-                <Input type="number" placeholder="Enter amount" />
+                <input
+              type="text"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
+                {/* <Input type="number" placeholder="Enter amount" /> */}
               </div>
 
               <div className="space-y-2">
@@ -396,6 +418,10 @@ function App() {
             <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600">
               You'll receive an NFT with booking details. Thank you for your order.
             </div>
+
+            <Button className="w-full" size="lg">
+              BOOK NOW
+            </Button>
           </Card>
         </div>
       </div>
