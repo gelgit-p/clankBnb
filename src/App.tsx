@@ -53,8 +53,8 @@ function App() {
 
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const [amout, setAmount] = useState<string>('');
-  const [selectedCoin, setSelectedCoin] = useState<string>('');
+  // const [amout, setAmount] = useState<string>('');
+  // const [selectedCoin, setSelectedCoin] = useState<string>('');
 
   const generateCalendarDays = () => {
     const year = currentDate.getFullYear();
