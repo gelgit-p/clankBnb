@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,108 @@ function ConnectWallet() {
 function App() {
 
   const [currentImage, setCurrentImage] = useState(0);
+  const [selectedDate, setSelectedDate] = useState<{
+    checkIn: Date | null;
+    checkOut: Date | null;
+  }>({
+    checkIn: null,
+    checkOut: null
+  });
+
+  const today = new Date();
+  const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [amout, setAmount] = useState<string>('');
+  const [selectedCoin, setSelectedCoin] = useState<string>('');
+
+  const generateCalendarDays = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const startingDay = firstDay.getDay();
+
+    const lastDay = new Date(year, month + 1, 0);
+    const totalDays = lastDay.getDate();
+
+    const days = [];
+
+    for (let i = 0; i <startingDay; i++) {
+      days.push(null);
+    }
+
+    for (let i = 1; i <= totalDays; i++) {
+      days.push(new Date(year, month, i));
+    }
+
+    const remainingDays = 42 - days.length;
+    for(let i = 0; i < remainingDays; i++) {
+      days.push(null);
+    }
+
+    return days;
+  };
+
+  const formatDate = (date: Date | null) => {
+    if(!date) return '';
+    return date.getDate().toString();
+  }
+
+  const isDateSelected = (date: Date | null) => {
+    if (!date || !selectedDate.checkIn || !selectedDate.checkOut) return false;
+    return date >= selectedDate.checkIn && date <= selectedDate.checkOut;
+  };
+
+  const isToday = (date: Date | null) => {
+    if (!date) return false;
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  };
+
+  const isPastDate = (date: Date | null) => {
+    if (!date) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  };
+
+  const handleDateClick = (date: Date | null) => {
+    if (!date || isPastDate(date)) return;
+    
+    if (!selectedDate.checkIn || (selectedDate.checkIn && selectedDate.checkOut)) {
+      setSelectedDate({
+        checkIn: date,
+        checkOut: null,
+      });
+    } else {
+      if (date < selectedDate.checkIn) {
+        setSelectedDate({
+          checkIn: date,
+          checkOut: selectedDate.checkIn,
+        });
+      } else {
+        setSelectedDate({
+          ...selectedDate,
+          checkOut: date,
+        });
+      }
+    }
+  };
+
+  const navigateMonth = (direction: 'prev' | 'next') => {
+    const newDate = new Date(currentDate);
+    if (direction === 'prev') {
+      newDate.setMonth(currentDate.getMonth() - 1);
+    } else {
+      newDate.setMonth(currentDate.getMonth() + 1);
+    }
+    setCurrentDate(newDate);
+  };
+
+  const getMonthYearString = () => {
+    return currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+  };
+
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -51,8 +153,6 @@ function App() {
   const previousImage = () => {
     setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
   }
-
-
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
@@ -203,7 +303,54 @@ function App() {
             <h3 className="text-xl font-semibold">Book your stay</h3>
             
             {/* Date Grid */}
-            <div className="space-y-4">
+            <div className="mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <button 
+                onClick={() => navigateMonth('prev')}
+                className="p-2 hover:bg-gray-100 rounded-full"
+                disabled={currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear()}
+              >
+                <ChevronLeft className="w-5 h-5 text-gray-600" />
+              </button>
+              <div className="text-lg font-medium text-gray-900">
+                {getMonthYearString()}
+              </div>
+              <button 
+                onClick={() => navigateMonth('next')}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-7 gap-1">
+              {weekDays.map(day => (
+                <div key={day} className="text-center text-sm font-medium text-gray-600 mb-2 py-2">
+                  {day}
+                </div>
+              ))}
+              {generateCalendarDays().map((date, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDateClick(date)}
+                  disabled={!date || isPastDate(date)}
+                  className={`
+                    relative p-2 rounded-lg text-sm transition-colors
+                    ${!date ? 'invisible' : ''}
+                    ${isPastDate(date) ? 'text-gray-300 cursor-not-allowed' : ''}
+                    ${isDateSelected(date) ? 'bg-pink-500 text-white' : 'hover:bg-pink-50'}
+                    ${isToday(date) ? 'font-bold' : ''}
+                  `}
+                >
+                  {formatDate(date)}
+                  {isToday(date) && (
+                    <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-pink-500 rounded-full" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+            {/* <div className="space-y-4">
               <label className="text-sm font-medium">Select nights:</label>
               <div className="grid grid-cols-4 gap-2">
                 {Array.from({ length: 8 }).map((_, i) => (
@@ -216,7 +363,7 @@ function App() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Payment Details */}
             <div className="space-y-4">
