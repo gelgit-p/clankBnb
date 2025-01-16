@@ -52,6 +52,9 @@ function WalletOptions() {
             >
               Disconnect Wallet
             </button>
+            <div>
+              {selectedConnector?.name}
+            </div>
           {/* <div>
             chainId: {account.chainId}
           </div> */}
