@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 
 
@@ -9,13 +9,13 @@ function WalletOptions() {
 
   const [selectedConnector, setSelectedConnector] = useState<typeof connectors[0] | null>(null);
 
-  const handleConnect = () => {
-    if (selectedConnector) {
-      connect({ connector: selectedConnector });
-    }
-  };
+  // const handleConnect = () => {
+  //   if (selectedConnector) {
+  //     connect({ connector: selectedConnector });
+  //   }
+  // };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const connector = connectors.find(connector => connector.uid === e.target.value) || null;
     setSelectedConnector(connector);
     if (connector) {

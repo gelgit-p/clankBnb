@@ -5,10 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccount, WagmiProvider } from 'wagmi';
-import { Account } from './layout/account';
 import WalletOptions from "./layout/wallet-options";
-import { getDefaultConfig, ConnectKitProvider } from 'connectkit';
-import { mainnet, polygon, optimism, arbitrum, sepolia } from "wagmi/chains";
 import { config } from './config';
 // import Home from './layout/home';
 
