@@ -1,18 +1,22 @@
 import { http, createConfig } from 'wagmi'
-import { polygon } from 'wagmi/chains'
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
-
-const projectId = process.env.REACT_WALLET_CONNECT_ENV as string
+import { mainnet, sepolia } from 'wagmi/chains'
+import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
 
 export const config = createConfig({
-  chains: [polygon],
+  chains: [mainnet, sepolia],
   connectors: [
     injected(),
-    walletConnect({ projectId }),
-    metaMask(),
-    safe(),
+    coinbaseWallet(),
+    walletConnect({ projectId: process.env.REACT_WALLET_CONNECT_ENV as string }),
   ],
   transports: {
-    [polygon.id]: http(),
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
   },
 })
+
+declare module 'wagmi' {
+  interface Register {
+    config: typeof config
+  }
+}

@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Home, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign, Home } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -6,8 +6,12 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccount, WagmiProvider } from 'wagmi';
 import { Account } from './layout/account';
-import { WalletOptions } from './layout/wallet-options';
+import WalletOptions from "./layout/wallet-options";
+import { getDefaultConfig, ConnectKitProvider } from 'connectkit';
+import { mainnet, polygon, optimism, arbitrum, sepolia } from "wagmi/chains";
 import { config } from './config';
+// import Home from './layout/home';
+
 
 
 const images = [
@@ -32,14 +36,16 @@ const images = [
 
 const queryClient = new QueryClient();
 
-function ConnectWallet() {
-  const {isConnected} = useAccount();
-  if(isConnected) return <Account />;
-  return <WalletOptions />;
+// function ConnectWallet() {
+//   const {isConnected} = useAccount();
+//   if(isConnected) return <Account />;
+//   return <WalletOptions />;
 
-}
+// }
+
 
 function App() {
+  const {status} = useAccount(); 
   const PRICE_PER_NIGHT = 0.0452; // Price in USD
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -179,9 +185,11 @@ function App() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
             clankbnb
           </h1>
+          {/* <HelloWalletComponent */}
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-              <ConnectWallet />
+              {/* <ConnectWallet /> */}
+              <WalletOptions />
               </QueryClientProvider>
           </WagmiProvider>
           {/* <Button variant="outline" className="flex items-center gap-2">
@@ -191,6 +199,7 @@ function App() {
         </header>
 
         {/* Main Content */}
+        {status === 'connected' ? (
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Left Column */}
           <div className="space-y-6">
@@ -200,23 +209,6 @@ function App() {
             <p className="text-lg text-gray-600">
               Book our premium beachfront apartment using your preferred cryptocurrency
             </p>
-
-            {/* Image Carousel */}
-            {/* <Card className="relative overflow-hidden aspect-video">
-              <img
-                src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80"
-                alt="Luxury apartment interior"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-between p-4">
-                <Button variant="secondary" size="icon">
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <Button variant="secondary" size="icon">
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </Card> */}
 
 <Card className="relative overflow-hidden aspect-video group">
               <div className="relative w-full h-full">
@@ -235,9 +227,7 @@ function App() {
                   </div>
                 ))}
               </div>
-
-
-<div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button 
                   variant="secondary" 
                   size="icon" 
@@ -428,7 +418,15 @@ function App() {
             </Button>
           </Card>
         </div>
+        ) : (
+          <div className="flex items-center justify-center min-h-screen">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text text-center">
+            Welcome to clankbnb. Rent apartments with your claker token.
+          </h1>
+        </div>
+          )};
       </div>
+      
     </div>
   );
 }
