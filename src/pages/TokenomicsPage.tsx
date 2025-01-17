@@ -66,7 +66,7 @@ function TokenomicsPage() {
         <Button 
           variant="outline" 
           className="w-full py-6 text-lg"
-          onClick={() => window.open('https://sepolia.etherscan.io/address/0xc40513ED244434B67cA79b9a099d500F9b5b21bf#code', '_blank')}
+          onClick={() => window.open('https://sepolia.etherscan.io/address/0x121C1344bb936dC50fecc6B1688AdefAad3F39F2', '_blank')}
         >
           Check Basescan
         </Button>
