@@ -1,8 +1,8 @@
 import { wagmiContractConfig } from '@/contract/contract';
 import { useState } from 'react';
-import { useAccount, useConnect, useDisconnect, useBalance, useReadContract } from 'wagmi'
+import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
 
-const tokenAddress = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2'
+// const tokenAddress = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2'
 
 
 function WalletOptions() {
@@ -100,6 +100,8 @@ function WalletOptions() {
               Disconnect Wallet
             </button>
             <div style={balanceStyle}>
+            {selectedConnector && <div>{selectedConnector.name}</div>}
+            <br />
             Balance: $CLANKBNB {balance ? balance.toString() : 'Loading balance...'}
             </div>
           {/* <div>
