@@ -8,6 +8,8 @@ import { config } from './config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import WalletOptions from './layout/wallet-options';
 import RoadmapPage from "./pages/RoadMap";
+import { Plus } from 'lucide-react';
+import CreateListingPage from "./pages/CreateListingPage";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,12 @@ function App() {
             Clankbnb
           </Link>
           <div className="flex gap-4">
+          <Link to="/create-listing">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                List Property
+              </Button>
+            </Link>
           <Link to="/roadmap">
               <Button variant="outline">Roadmap</Button>
             </Link>
@@ -41,6 +49,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/tokenomics" element={<TokenomicsPage />} />
           <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/create-listing" element={<CreateListingPage />} />
         </Routes>
       </div>
     </div>
