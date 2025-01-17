@@ -406,12 +406,12 @@ const images = [
             </Card>
           </div>
           ) : (
-            <div className="flex items-center justify-center min-h-screen">
-                <p>CA: 0xc40513ED244434B67cA79b9a099d500F9b5b21bf</p>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text text-center">
-              Welcome to clankbnb. Rent apartments with your claker token.
-            </h1>
-          </div>
+            <div className="flex flex-col items-center justify-center min-h-screen">
+  <h1 className="text-center text-2xl font-bold">CA: 0xc40513ED244434B67cA79b9a099d500F9b5b21bf</h1>
+  <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text text-center">
+    Welcome to clankbnb. Rent apartments with your clanker token.
+  </h1>
+</div>
             )};
         </div>
         
