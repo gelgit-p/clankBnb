@@ -1,19 +1,59 @@
+import { wagmiContractConfig } from '@/contract/contract';
 import { useState } from 'react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useDisconnect, useBalance, useReadContract } from 'wagmi'
+
+const tokenAddress = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2'
 
 
 function WalletOptions() {
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
-  const { disconnect } = useDisconnect()
-
-  const [selectedConnector, setSelectedConnector] = useState<typeof connectors[0] | null>(null);
-
-  // const handleConnect = () => {
-  //   if (selectedConnector) {
-  //     connect({ connector: selectedConnector });
-  //   }
+  const { disconnect } = useDisconnect();
+  // const { data } = useBalance({
+  //   address: account.address,
+  // })
+  // const {balance} = useBalance({
+  //   address: '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2',
+  //   token: tokenAddress
+  // })
+  console.log(account.address, 'accountAddress')
+  const addresses = account.address ? [account.address] : [];
+  // const balance = useBalance({
+  //   address: account.address,
+  //   token: tokenAddress
+  // })
+  const { data: balance } = useReadContract({
+    ...wagmiContractConfig,
+    functionName: 'balanceOf',
+    args: addresses.map(address => address.startsWith('0x') ? address : `0x${address}`) as [`0x${string}`],
+    // addresses.map(address => address.startsWith('0x') ? address : `0x${address}`),
+  });
+  // const fetchBalances = async (addresses: string[]) => {
+  //   const balances = await Promise.all(
+  //     addresses.map(async (address) =>
+  //       useReadContract({
+  //         ...wagmiContractConfig,
+  //         functionName: 'balanceOf',
+  //         args: [address.startsWith('0x') ? address : `0x${address}`] as [`0x${string}`],
+  //       })
+  //     )
+  //   );
+  //   return balances;
   // };
+//   const balances = await Promise.all(
+//     addresses.map(address =>
+//         useReadContract({
+//             ...wagmiContractConfig,
+//             functionName: 'balanceOf',
+//             args: [address.startsWith('0x') ? address : `0x${address}`] as [`0x${string}`],
+//         })
+//     )
+// );
+
+  // console.log(balance, 'balance')
+  // const [balance, setBalance] = useState<string | null>(null);
+  // const CONTRACT_ADDRESS = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2';
+  const [selectedConnector, setSelectedConnector] = useState<typeof connectors[0] | null>(null);
 
   const handleChange = (e: any) => {
     const connector = connectors.find(connector => connector.uid === e.target.value) || null;
@@ -38,6 +78,13 @@ function WalletOptions() {
     backgroundColor: '#e0e0e0',
   };
 
+  const balanceStyle = {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: '10px',
+  };
+
   return (
     <>
     <div>
@@ -52,8 +99,8 @@ function WalletOptions() {
             >
               Disconnect Wallet
             </button>
-            <div>
-              {account?.address}
+            <div style={balanceStyle}>
+            Balance: $CLANKBNB {balance ? balance.toString() : 'Loading balance...'}
             </div>
           {/* <div>
             chainId: {account.chainId}
@@ -80,6 +127,7 @@ function WalletOptions() {
             ))}
           </select>
           {status !== 'idle' && <div>{status}</div>}
+          {/* {selectedConnector && <div>Selected: {selectedConnector.name}</div>} */}
           <div>{error?.message}</div>
         </div>
       )}
