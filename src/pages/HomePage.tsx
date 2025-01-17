@@ -407,6 +407,7 @@ const images = [
           </div>
           ) : (
             <div className="flex items-center justify-center min-h-screen">
+                <p>CA: 0xc40513ED244434B67cA79b9a099d500F9b5b21bf</p>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text text-center">
               Welcome to clankbnb. Rent apartments with your claker token.
             </h1>
