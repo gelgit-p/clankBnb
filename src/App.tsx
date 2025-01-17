@@ -22,7 +22,7 @@ function App() {
           </Link>
           <div className="flex gap-4">
             <Link to="/tokenomics">
-              <Button variant="outline">Tokenomics</Button>
+              <Button variant="outline">$ CLANKBNB</Button>
             </Link>
             <WagmiProvider config={config}>
               <QueryClientProvider client={queryClient}>
