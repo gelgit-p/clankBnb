@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign, Home } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign, Home, Users } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -7,19 +7,21 @@ import { useAccount } from 'wagmi';
 
 const images = [
     {
-      url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80",
+      url: "https://res.cloudinary.com/gelgit/image/upload/v1737110870/house1.png",
       alt: "Luxury beachfront living room"
     },
     {
-      url: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80",
+      url: "https://res.cloudinary.com/gelgit/image/upload/v1737110870/house3.png",
       alt: "Modern bedroom with ocean view"
     },
+    // https://res.cloudinary.com/gelgit/image/upload/v1737110870/house3.png
+// https://res.cloudinary.com/gelgit/image/upload/v1737110870/house2.png
     {
-      url: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80",
+      url: "https://res.cloudinary.com/gelgit/image/upload/v1737110870/house2.png",
       alt: "Designer kitchen"
     },
     {
-      url: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&q=80",
+      url: "https://res.cloudinary.com/gelgit/image/upload/v1737110870/house1.png",
       alt: "Private balcony"
     }
   ];
@@ -262,12 +264,12 @@ const images = [
                 <Card className="p-4 flex flex-col items-center text-center">
                   <BedDouble className="h-6 w-6 mb-2 text-pink-500" />
                   <span className="text-sm font-medium text-gray-600">Bedrooms</span>
-                  <span className="font-semibold">3 Beds</span>
+                  <span className="font-semibold">1 Bed</span>
                 </Card>
                 <Card className="p-4 flex flex-col items-center text-center">
                   <Bath className="h-6 w-6 mb-2 text-pink-500" />
                   <span className="text-sm font-medium text-gray-600">Bathrooms</span>
-                  <span className="font-semibold">2.5 Baths</span>
+                  <span className="font-semibold">1 Baths</span>
                 </Card>
               </div>
   
@@ -275,11 +277,11 @@ const images = [
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-gray-600">
                   <MapPin className="h-5 w-5 text-pink-500" />
-                  <span>Prime Beach Location, Miami Beach, FL</span>
+                  <span>Viña del Mar, Chile.</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-600">
-                  <Wifi className="h-5 w-5 text-pink-500" />
-                  <span>High-Speed WiFi & Smart Home Features</span>
+                  <Users className="h-5 w-5 text-pink-500" />
+                  <span>Fits 4 people</span>
                 </div>
               </div>
             </div>
