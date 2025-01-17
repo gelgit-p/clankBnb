@@ -72,7 +72,7 @@ function WalletOptions() {
               marginBottom: '10px',
             }}
           >
-            <option value="" disabled>Select a connector</option>
+            <option value="" disabled>connect your wallet</option>
             {connectors.map((connector) => (
               <option key={connector.uid} value={connector.uid}>
                 {connector.name}
