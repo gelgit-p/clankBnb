@@ -294,7 +294,7 @@ const images = [
   
               <div className="flex items-center text-xl font-bold text-gray-900">
                 <DollarSign className="w-5 h-5 text-pink-500" />
-                CAPITAL {PRICE_PER_NIGHT}
+                CLANKBNB {PRICE_PER_NIGHT}
                 <span className="text-sm font-normal text-gray-600 ml-1">/ night</span>
               </div>
                 </div>
