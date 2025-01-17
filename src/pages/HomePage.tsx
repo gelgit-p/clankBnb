@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Ruler, BedDouble, Bath, MapPin, Wifi, ChevronLeft, ChevronRight, DollarSign, Home, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Ruler, BedDouble, Bath, MapPin, ChevronLeft, ChevronRight, DollarSign, Home, Users } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
