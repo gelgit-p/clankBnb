@@ -7,6 +7,7 @@ import { WagmiProvider } from 'wagmi';
 import { config } from './config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import WalletOptions from './layout/wallet-options';
+import RoadmapPage from "./pages/RoadMap";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,9 @@ function App() {
             Clankbnb
           </Link>
           <div className="flex gap-4">
+          <Link to="/roadmap">
+              <Button variant="outline">Roadmap</Button>
+            </Link>
             <Link to="/tokenomics">
               <Button variant="outline">$ CLANKBNB</Button>
             </Link>
@@ -36,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/tokenomics" element={<TokenomicsPage />} />
+          <Route path="/roadmap" element={<RoadmapPage />} />
         </Routes>
       </div>
     </div>
