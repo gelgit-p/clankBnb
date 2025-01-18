@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { parseEther } from 'viem'
 import {
   Select,
   SelectContent,
@@ -15,6 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useWriteContract, useAccount } from "wagmi";
+import { listingabiContractConfig } from "@/contract/listingabi";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient();
 
 const formSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters"),
@@ -30,6 +36,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 function CreateListingPage() {
+    const {address} = useAccount(); 
+    const {data: hash, writeContract} = useWriteContract();
   const [images, setImages] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([
     "High-Speed WiFi",
@@ -42,7 +50,22 @@ function CreateListingPage() {
     resolver: zodResolver(formSchema),
   });
 
+//   const queryClient = new QueryClient();
+
   const onSubmit = (data: FormData) => {
+    // New unique id
+    // const unique_id = uuidv4();
+
+    // Get first 8 characters using slice
+    // const tokenId = unique_id.slice(0, 8);
+    // const tokenId = Math.floor(Math.random() * 1000000).toString();
+    
+    writeContract({
+        ...listingabiContractConfig,
+        address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+        functionName: 'createListing',
+        args: [address, parseEther('420')]
+    })
     console.log({ ...data, images, amenities });
   };
 
@@ -67,7 +90,8 @@ function CreateListingPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <QueryClientProvider client={queryClient}>
+        <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">List Your Property</h1>
         <p className="text-gray-600">Share your luxury space with our community</p>
@@ -255,9 +279,11 @@ function CreateListingPage() {
           <Button type="submit">
             Create Listing
           </Button>
+          {hash && <div>Transaction Hash: {hash}</div>}
         </div>
       </form>
     </div>
+    </QueryClientProvider>
   );
 }
 

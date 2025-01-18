@@ -82,7 +82,7 @@ function WalletOptions() {
     fontSize: '18px',
     fontWeight: 'bold',
     color: '#333',
-    marginTop: '10px',
+    marginTop: '2px',
   };
 
   return (
