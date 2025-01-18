@@ -1,6 +1,7 @@
 import { wagmiContractConfig } from '@/contract/contract';
 import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
+import { useNavigate } from 'react-router-dom';
 
 // const tokenAddress = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2'
 
@@ -9,19 +10,14 @@ function WalletOptions() {
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
   const { disconnect } = useDisconnect();
-  // const { data } = useBalance({
-  //   address: account.address,
-  // })
-  // const {balance} = useBalance({
-  //   address: '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2',
-  //   token: tokenAddress
-  // })
+  // const navigate = useNavigate();
+
+  const handleDisconnect = () => {
+    disconnect();
+    // navigate('/');
+  };
   console.log(account.address, 'accountAddress')
   const addresses = account.address ? [account.address] : [];
-  // const balance = useBalance({
-  //   address: account.address,
-  //   token: tokenAddress
-  // })
   const { data: balance } = useReadContract({
     ...wagmiContractConfig,
     functionName: 'balanceOf',
@@ -92,7 +88,8 @@ function WalletOptions() {
         <>
           <button
               type="button"
-              onClick={() => disconnect()}
+              onClick={handleDisconnect}
+              // onClick={() => disconnect()}
               style={buttonStyle}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = buttonHoverStyle.backgroundColor)}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor)}

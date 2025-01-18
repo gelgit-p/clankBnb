@@ -1,4 +1,3 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,16 +19,13 @@ import {
 import { useWriteContract, useAccount } from 'wagmi'
 import { listingabiContractConfig } from '@/contract/listingabi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { createLazyFileRoute } from '@tanstack/react-router'
+
+const queryClient = new QueryClient()
 
 export const Route = createLazyFileRoute('/createlisting')({
   component: RouteComponent,
 })
-
-// function RouteComponent() {
-//   return <div>Hello "/createlisting"!</div>
-// }
-
-const queryClient = new QueryClient()
 
 const formSchema = z.object({
   title: z.string().min(10, 'Title must be at least 10 characters'),
@@ -103,207 +99,207 @@ function RouteComponent() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            List Your Property
-          </h1>
-          <p className="text-gray-600">
-            Share your luxury space with our community
-          </p>
-        </div>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          List Your Property
+        </h1>
+        <p className="text-gray-600">
+          Share your luxury space with our community
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Property Details</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Property Details</h2>
 
-            <div className="space-y-4">
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                placeholder="Luxury Beachfront Villa"
+                {...register('title')}
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.title.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                placeholder="Describe your property..."
+                className="h-32"
+                {...register('description')}
+              />
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.description.message}
+                </p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="price">Price per night (USD)</Label>
                 <Input
-                  id="title"
-                  placeholder="Luxury Beachfront Villa"
-                  {...register('title')}
+                  id="price"
+                  type="number"
+                  placeholder="500"
+                  {...register('price')}
                 />
-                {errors.title && (
+                {errors.price && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.title.message}
+                    {errors.price.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe your property..."
-                  className="h-32"
-                  {...register('description')}
-                />
-                {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.description.message}
-                  </p>
-                )}
+                <Label htmlFor="propertyType">Property Type</Label>
+                <Select
+                  onValueChange={(value) =>
+                    register('propertyType').onChange({ target: { value } })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="apartment">Apartment</SelectItem>
+                    <SelectItem value="house">House</SelectItem>
+                    <SelectItem value="villa">Villa</SelectItem>
+                    <SelectItem value="penthouse">Penthouse</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="price">Price per night (USD)</Label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <Label htmlFor="bedrooms">Bedrooms</Label>
+                <div className="flex items-center">
+                  <Bed className="w-4 h-4 mr-2 text-gray-500" />
                   <Input
-                    id="price"
+                    id="bedrooms"
                     type="number"
-                    placeholder="500"
-                    {...register('price')}
+                    {...register('bedrooms')}
                   />
-                  {errors.price && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.price.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="propertyType">Property Type</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      register('propertyType').onChange({ target: { value } })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="apartment">Apartment</SelectItem>
-                      <SelectItem value="house">House</SelectItem>
-                      <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="penthouse">Penthouse</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                  <Label htmlFor="bedrooms">Bedrooms</Label>
-                  <div className="flex items-center">
-                    <Bed className="w-4 h-4 mr-2 text-gray-500" />
-                    <Input
-                      id="bedrooms"
-                      type="number"
-                      {...register('bedrooms')}
-                    />
-                  </div>
+              <div>
+                <Label htmlFor="bathrooms">Bathrooms</Label>
+                <div className="flex items-center">
+                  <Bath className="w-4 h-4 mr-2 text-gray-500" />
+                  <Input
+                    id="bathrooms"
+                    type="number"
+                    {...register('bathrooms')}
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <Label htmlFor="bathrooms">Bathrooms</Label>
-                  <div className="flex items-center">
-                    <Bath className="w-4 h-4 mr-2 text-gray-500" />
-                    <Input
-                      id="bathrooms"
-                      type="number"
-                      {...register('bathrooms')}
-                    />
-                  </div>
+              <div>
+                <Label htmlFor="area">Area (sq ft)</Label>
+                <div className="flex items-center">
+                  <Ruler className="w-4 h-4 mr-2 text-gray-500" />
+                  <Input id="area" type="number" {...register('area')} />
                 </div>
+              </div>
 
-                <div>
-                  <Label htmlFor="area">Area (sq ft)</Label>
-                  <div className="flex items-center">
-                    <Ruler className="w-4 h-4 mr-2 text-gray-500" />
-                    <Input id="area" type="number" {...register('area')} />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <div className="flex items-center">
-                    <MapPin className="w-4 h-4 mr-2 text-gray-500" />
-                    <Input
-                      id="location"
-                      placeholder="Miami, FL"
-                      {...register('location')}
-                    />
-                  </div>
+              <div>
+                <Label htmlFor="location">Location</Label>
+                <div className="flex items-center">
+                  <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+                  <Input
+                    id="location"
+                    placeholder="Miami, FL"
+                    {...register('location')}
+                  />
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
+        </Card>
 
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Images</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {images.map((url, index) => (
-                <div key={index} className="relative group aspect-video">
-                  <img
-                    src={url}
-                    alt={`Property ${index + 1}`}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Images</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {images.map((url, index) => (
+              <div key={index} className="relative group aspect-video">
+                <img
+                  src={url}
+                  alt={`Property ${index + 1}`}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-2 right-2 p-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-4 h-4 text-gray-600" />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addImage}
+              className="aspect-video flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
+            >
+              <Camera className="w-6 h-6 text-gray-400" />
+            </button>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Amenities</h2>
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Add amenity..."
+                value={newAmenity}
+                onChange={(e) => setNewAmenity(e.target.value)}
+              />
+              <Button type="button" variant="outline" onClick={addAmenity}>
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {amenities.map((amenity, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full"
+                >
+                  <Wifi className="w-4 h-4 text-gray-500" />
+                  <span>{amenity}</span>
                   <button
                     type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-2 right-2 p-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => removeAmenity(index)}
+                    className="hover:text-gray-700"
                   >
-                    <X className="w-4 h-4 text-gray-600" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               ))}
-              <button
-                type="button"
-                onClick={addImage}
-                className="aspect-video flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
-              >
-                <Camera className="w-6 h-6 text-gray-400" />
-              </button>
             </div>
-          </Card>
-
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Amenities</h2>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Add amenity..."
-                  value={newAmenity}
-                  onChange={(e) => setNewAmenity(e.target.value)}
-                />
-                <Button type="button" variant="outline" onClick={addAmenity}>
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {amenities.map((amenity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full"
-                  >
-                    <Wifi className="w-4 h-4 text-gray-500" />
-                    <span>{amenity}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeAmenity(index)}
-                      className="hover:text-gray-700"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-
-          <div className="flex justify-end gap-4">
-            <Button type="button" variant="outline">
-              Cancel
-            </Button>
-            <Button type="submit">Create Listing</Button>
-            {hash && <div>Transaction Hash: {hash}</div>}
           </div>
-        </form>
-      </div>
-    </QueryClientProvider>
+        </Card>
+
+        <div className="flex justify-end gap-4">
+          <Button type="button" variant="outline">
+            Cancel
+          </Button>
+          <Button type="submit">Create Listing</Button>
+          {hash && <div>Transaction Hash: {hash}</div>}
+        </div>
+      </form>
+    </div>
+    </div>  
   )
 }

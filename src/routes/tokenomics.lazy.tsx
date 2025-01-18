@@ -30,6 +30,7 @@ const data = [
 
 function RouteComponent() {
   return (
+    <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-4">
         <h1 className="text-5xl font-bold text-gray-800">$CLANKBNB</h1>
@@ -93,6 +94,7 @@ function RouteComponent() {
           Check Basescan
         </Button>
       </div>
+    </div>
     </div>
   )
 }
