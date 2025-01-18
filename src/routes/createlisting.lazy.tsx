@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -41,15 +41,15 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>
 
 function RouteComponent() {
-  const { address } = useAccount()
-  const { data: hash, writeContract } = useWriteContract()
-  const [images, setImages] = useState<string[]>([])
+  const { address } = useAccount();
+  const { data: hash, writeContract } = useWriteContract();
+  const [images, setImages] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([
     'High-Speed WiFi',
     'Smart Home Features',
     'Ocean View',
-  ])
-  const [newAmenity, setNewAmenity] = useState('')
+  ]);
+  const [newAmenity, setNewAmenity] = useState('');
 
   const {
     register,
@@ -62,6 +62,7 @@ function RouteComponent() {
   //   const queryClient = new QueryClient();
 
   const onSubmit = (data: FormData) => {
+
     // New unique id
     // const unique_id = uuidv4();
 
@@ -71,9 +72,9 @@ function RouteComponent() {
 
     writeContract({
       ...listingabiContractConfig,
-      address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+      address: '0x5C639874B7faB5d0A4da383963dbeF194a533675',
       functionName: 'createListing',
-      args: [address, parseEther('420')],
+      args: [data.title, data.description, data.propertyType, data.area, data.bedrooms, data.bathrooms, data.address, images, amenities  ],
     })
     console.log({ ...data, images, amenities })
   }
@@ -146,11 +147,11 @@ function RouteComponent() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="price">Price per night (USD)</Label>
+                <Label htmlFor="price">Price per night ($CLANKBNB)</Label>
                 <Input
                   id="price"
                   type="number"
-                  placeholder="500"
+                  placeholder="0.0049939"
                   {...register('price')}
                 />
                 {errors.price && (
@@ -219,7 +220,7 @@ function RouteComponent() {
                   <MapPin className="w-4 h-4 mr-2 text-gray-500" />
                   <Input
                     id="location"
-                    placeholder="Miami, FL"
+                    placeholder="Redbuick crossing, Miami, FL"
                     {...register('location')}
                   />
                 </div>
@@ -300,6 +301,7 @@ function RouteComponent() {
         </div>
       </form>
     </div>
-    </div>  
+    </div>
+    
   )
 }
