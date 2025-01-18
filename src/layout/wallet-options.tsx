@@ -1,7 +1,6 @@
 import { wagmiContractConfig } from '@/contract/contract';
 import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
-import { useNavigate } from 'react-router-dom';
 
 // const tokenAddress = '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2'
 

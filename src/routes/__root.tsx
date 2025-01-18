@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -6,8 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi';
 import { config } from '@/config'
 import WalletOptions from '@/layout/wallet-options'
-import { useWriteContract, useAccount } from 'wagmi'
-// import { config } from './config';
 
 const queryClient = new QueryClient();
 

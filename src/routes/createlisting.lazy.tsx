@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -8,7 +8,6 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { parseEther } from 'viem'
 import {
   Select,
   SelectContent,
@@ -16,12 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useWriteContract, useAccount } from 'wagmi'
+import { useWriteContract, } from 'wagmi'
 import { listingabiContractConfig } from '@/contract/listingabi'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-const queryClient = new QueryClient()
+// const queryClient = new QueryClient()
 
 export const Route = createLazyFileRoute('/createlisting')({
   component: RouteComponent,
@@ -41,7 +39,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>
 
 function RouteComponent() {
-  const { address } = useAccount();
+  // const { address } = useAccount();
   const { data: hash, writeContract } = useWriteContract();
   const [images, setImages] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([
