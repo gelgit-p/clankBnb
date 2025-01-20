@@ -354,7 +354,7 @@ function RouteComponent() {
               >
                 CreateListing
               </button> */}
-              <Button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              <Button type="submit" className="w-full p-2 bg-pink-500 text-white rounded hover:bg-blue-600">
           {isPending ? 'confirming' : 'Create Listing'}
         </Button>
         {hash && <div>Tx hash: {hash}</div>}
