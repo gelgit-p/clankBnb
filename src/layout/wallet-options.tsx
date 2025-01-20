@@ -1,4 +1,4 @@
-import { wagmiContractConfig } from '@/contract/contract';
+import { wagmiTokenConfig } from '@/contract/token';
 import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
 
@@ -18,7 +18,7 @@ function WalletOptions() {
   console.log(account.address, 'accountAddress')
   const addresses = account.address ? [account.address] : [];
   const { data: balance } = useReadContract({
-    ...wagmiContractConfig,
+    ...wagmiTokenConfig,
     functionName: 'balanceOf',
     args: addresses.map(address => address.startsWith('0x') ? address : `0x${address}`) as [`0x${string}`],
     // addresses.map(address => address.startsWith('0x') ? address : `0x${address}`),
@@ -97,12 +97,13 @@ function WalletOptions() {
             </button>
             <div style={balanceStyle}>
             {selectedConnector && <div>{selectedConnector.name}</div>}
-            <br />
+            {/* <br /> */}
             Balance: $CLANKBNB {balance ? balance.toString() : 'Loading balance...'}
             </div>
-          {/* <div>
-            chainId: {account.chainId}
-          </div> */}
+          <div>
+            {/* selectedId: {account} */}
+            status: {account.status}
+          </div>
         </>
       ) : (
         <div>

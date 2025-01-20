@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -15,13 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSimulateContract, useWriteContract, useConnect, useAccount, useWaitForTransactionReceipt, type BaseError } from 'wagmi'
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { listingabi } from '@/abi/listingabi'
-import { useTokenWrite } from '@/hooks/use-token'
-import useToast  from '@/hooks/use-toast'
-import { listingabiContractConfig } from '@/contract/listingabi'
-import useDebounce from '@/hooks/useDebounce'
+import { wagmiContractConfig } from '@/contract/contract'
 
 // const queryClient = new QueryClient()
 
@@ -43,149 +39,33 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>
 
 function RouteComponent() {
-  const toast = useToast()
+  // const toast = useToast()
   // const { address } = useAccount();
   // const { data: hash, error, isPending, writeContract } = useWriteContract();
-  const [title, setTitle] =  useState('');
-  const [description, setDescription] = useState('')
+  // const [title, setTitle] =  useState('');
+  // const [description, setDescription] = useState('')
   const [propertyType, setPropertyType] = useState('')
-  const [bedrooms, setBedrooms] = useState('')
-  const [bathrooms, setBathrooms] = useState('')
-  const [area, setArea] = useState('')
-    const [price, setPrice] = useState('')
-  const [location, setLocation] = useState('')
+  // const [bedrooms, setBedrooms] = useState('')
+  // const [bathrooms, setBathrooms] = useState('')
+  // const [area, setArea] = useState('')
+  //   const [price, setPrice] = useState('')
+  // const [location, setLocation] = useState('')
   const [images, setImages] = useState<string[]>([]);
   const [newAmenity, setNewAmenity] = useState('');
-  const debouncedTitle = useDebounce(title, 500)
-  const debouncedDescription = useDebounce(description, 500)
-  const debouncedpropertyType = useDebounce(propertyType, 500)
-  const debouncedBedrooms = useDebounce(bedrooms, 500)
-  const debouncedBathrooms = useDebounce(bathrooms, 500)
-  const debouncedArea = useDebounce(area, 500)
-  const debouncedLocation = useDebounce(location, 500)
-  const debouncedPrice = useDebounce(price, 500)
-  const debouncedImages = useDebounce(images, 500)
-  const debouncedAmenity = useDebounce(newAmenity, 500)
-  const { connectAsync } = useConnect()
-  const { address, isConnected } = useAccount()
+  const { address } = useAccount()
   const [amenities, setAmenities] = useState<string[]>([
     'High-Speed WiFi',
     'Smart Home Features',
     'Ocean View',
   ]);
- 
-
 
   const {
     register,
-    // handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   })
 
-  // const createNewListing = useTokenWrite('createListing', {
-  //   onSuccess(data) {
-  //     console.log('data: transfer write ', data);
-  //   }
-  // })
-
-  // const handleNewListing = async (formData: FormData) => {
-  //   const { title, description, propertyType, location, area, bedrooms, bathrooms } = formData;
-  //   // if (!recipient) return toast('Please enter recipient address', 'error');
-  //   // const amount = parseUnits('10', tokenDecimalsData);
-  //   await createNewListing.write([title, description, propertyType, location, area, bedrooms, bathrooms, images, amenities]);
-  //   toast('Listing created', 'success');
-  // };
-
-  const onSubmit = async (data: FormData) => {
-    const { title, description, propertyType, location, area, price, bedrooms, bathrooms } = data;
-    
-    if (!address) {
-      // await connectAsync({ chainId: 11155111, connector: injected() });
-    }
-
-    const  result  = useSimulateContract({
-      address: '0x97085885339305f4B6A2f4C8253C1BbD923e09b2',
-      abi: listingabi, // Ensure listingabi is defined and imported correctly
-      functionName: 'createListing',
-      args: [title, description, propertyType, location, area, price, bedrooms, bathrooms, images, amenities],
-    });
-
-    const { writeContract } = useWriteContract();
-
-    if (result?.request) {
-      await writeContract(result.request);
-    }
-  };
-
-  // const  {data}  = useSimulateContract({
-  //   abi: listingabi,
-  //   address: '0x97085885339305f4B6A2f4C8253C1BbD923e09b2',
-  //   // ...listingabiContractConfig,
-  //   // contractInterface: nftABI,
-  //   functionName: 'createListing',
-  //   // enabled: Boolean(quantity),
-  //   args: [debouncedTitle, debouncedDescription, debouncedpropertyType, debouncedLocation, debouncedArea, debouncedPrice, debouncedBedrooms, debouncedImages, debouncedBathrooms, debouncedAmenity]
-  // })
-
-  // const { writeContract } = useWriteContract()
-
-  //   const queryClient = new QueryClient();
-
-  useEffect(() => {
-    if(!isConnected){
-      setPrice('');
-      return
-    }
-  }, [isConnected, address]
-)
-
-
-
-  // const onSubmit = async (formData: FormData) => {
-  // const { title, description, propertyType, location, area, bedrooms, bathrooms } = formData;
-  //     if(!address) {
-  //       await connectAsync({ chainId: 11155111, connector: injected()})
-  //     }
-
-  //     const {data, error, isSuccess, isLoading: isLoadingSimulate} = useSimulateContract({
-  //       address: '0x14C8fe12a235bFCF6Da2b8179F34Da0C5D79415c',
-  //       abi: listingabi,
-  //       functionName: 'createListing',
-  //       args: [title, description, propertyType, location, area, bedrooms, bathrooms, images, amenities],
-  //     })
-  //     console.log(data, 'SIMULATION')
-
-  //     setResult(data)
-
-  //     const { writeContract, isLoadingWrite } = useWriteContract()
-
-  //     if (data?.request) {
-  //       await writeContract(data.request);
-  //     }
-
-  //     const isButtonDisabled = !data  || isLoadingSimulate || isLoadingWrite
-  // }
-    //  await writeContractAsync({
-    //   // chainId: sepolia.id,
-    //   address: '0x14C8fe12a235bFCF6Da2b8179F34Da0C5D79415c', // change to receipient address
-    //   functionName: 'createListing',
-    //   abi: listingabi,
-    //   args: [title, description, propertyType, location, area, bedrooms, bathrooms, images, amenities],
-    // })
-//     console.log('Listing created successfully:', data)
-
-//  } catch(err) {
-//   console.error('Error creating listing:', err)
-//  } finally {
-//   setIsSubmitting(false)
-//  }
-
-  // const { isLoading: isConfirming, isSuccess: isConfirmed } =
-  // useWaitForTransactionReceipt({
-  //   hash,
-  // })
 
   const addImage = () => {
     const url = prompt('Enter image URL:')
@@ -207,6 +87,38 @@ function RouteComponent() {
     setAmenities(amenities.filter((_, i) => i !== index))
   }
 
+  //  const WriteContract = () {
+    const { data: hash, isPending, writeContract } = useWriteContract();
+  
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      // const tokenId = formData.get('tokenId');
+      const title = formData.get('title')
+      const description = formData.get('description');
+      const price = formData.get('price');
+      const bedroom = formData.get('bedroom');
+      const bathroom = formData.get('bathroom');
+      const area = formData.get('area')
+      const location = formData.get('location')
+      // const listingType = formData.get('propertyType');
+      if (title === null) {
+        console.error('title is missing');
+        return;
+      }
+
+      console.log(formData, 'form data');
+      // const tokenIdValue = parseInt(tokenId.toString());
+      writeContract({
+        ...wagmiContractConfig,
+        functionName: 'createListing',
+        // @ts-ignore
+        args: [title, description, propertyType, location, area, price, bedroom, images, bathroom, amenities],
+      });
+    };
+  // }
+   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+
   // const isButtonDisabled = isPending || isSubmitting || isConfirming
 
   return (
@@ -223,7 +135,7 @@ function RouteComponent() {
 
       {/* onSubmit={handleSubmit(onSubmit)} */}
 
-      <form className="space-y-8"> 
+      <form onSubmit={submitHandler} className="space-y-8"> 
         <Card className="p-6">
           <p>{address}</p>
           <h2 className="text-xl font-semibold mb-4">Property Details</h2>
@@ -234,9 +146,7 @@ function RouteComponent() {
               <Input
                 id="title"
                 placeholder="Luxury Beachfront Villa"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                
+                name="title"
                 // {...register('title')}
               />
               {errors.title && (
@@ -252,8 +162,7 @@ function RouteComponent() {
                 id="description"
                 placeholder="Describe your property..."
                 className="h-32"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                name="description"
                 // {...register('description')}
               />
               {errors.description && (
@@ -270,8 +179,7 @@ function RouteComponent() {
                   id="price"
                   type="decimal"
                   placeholder="0.0049939"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  name="price"
                   // {...register('price')}
                 />
                 {errors.price && (
@@ -284,13 +192,12 @@ function RouteComponent() {
               <div>
                 <Label htmlFor="propertyType">Property Type</Label>
                 <Select
-                  value={propertyType}
-                  onValueChange={(value) => setPropertyType(value)}
+                  name="propertyType"
                 // value={propertyType}
-                // onValueChange={(e) => setPropertyType(e.target.value)}
-                  // onValueChange={(value) =>
-                    // register('propertyType').onChange({ target: { value } })
-                  // }
+                onValueChange={(value) => {
+                  setPropertyType(value);
+                  register('propertyType').onChange({ target: { value } });
+                }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
@@ -313,8 +220,9 @@ function RouteComponent() {
                   <Input
                     id="bedrooms"
                     type="number"
-                    value={bedrooms}
-                  onChange={(e) => setBedrooms(e.target.value)}
+                    // value={bedrooms}
+                    name="bedrooms"
+                  // onChange={(e) => setBedrooms(e.target.value)}
                     // {...register('bedrooms')}
                   />
                 </div>
@@ -327,8 +235,9 @@ function RouteComponent() {
                   <Input
                     id="bathrooms"
                     type="number"
-                    value={bathrooms}
-                  onChange={(e) => setBathrooms(e.target.value)}
+                    // value={bathrooms}
+                    name="bathrooms"
+                  // onChange={(e) => setBathrooms(e.target.value)}
                     // {...register('bathrooms')}
                   />
                 </div>
@@ -338,8 +247,7 @@ function RouteComponent() {
                 <Label htmlFor="area">Area (sq ft)</Label>
                 <div className="flex items-center">
                   <Ruler className="w-4 h-4 mr-2 text-gray-500" />
-                  <Input id="area" type="number" value={area}
-                  onChange={(e) => setArea(e.target.value)}   />
+                  <Input id="area" type="number" name="area" />
                   {/* {...register('area')} */}
                 </div>
               </div>
@@ -351,8 +259,7 @@ function RouteComponent() {
                   <Input
                     id="location"
                     placeholder="Redbuick crossing, Miami, FL"
-                    value={location}
-                  onChange={(e) => setLocation(e.target.value)} 
+                    name="location"
                     // {...register('location')}
                   />
                 </div>
@@ -397,6 +304,7 @@ function RouteComponent() {
               <Input
                 placeholder="Add amenity..."
                 value={newAmenity}
+                name={newAmenity}
                 onChange={(e) => setNewAmenity(e.target.value)}
               />
               <Button type="button" variant="outline" onClick={addAmenity}>
@@ -428,14 +336,7 @@ function RouteComponent() {
           <Button  type="button" variant="outline">
             Cancel
           </Button>
-          {/* <button
-  disabled={!Boolean(data?.request)}
-  onClick={() => writeContract(data!.request)}
->
-  Create listing
-</button> */}
-<button 
-      onClick={() => 
+      {/* onClick={() => 
         writeContract({ 
           listingabi,
           address: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -446,21 +347,20 @@ function RouteComponent() {
             123n,
           ],
        })
-      }
-    >
-      CreateListing
-    </button>
-{/* <button disabled={!write} onClick={()=>write?.()}>Send</button> */}
-          {/* <Button 
-          // onClick={handleTransfer}
-              // type="submit" 
-              // onClick={handleTransfer}
-  //             disabled={!Boolean(result?.request)}
-  // onClick={() => result?.request && writeContract(result.request)}
-            >
-              Create Listing
-            </Button> */}
-          {/* {hash && <div>Transaction Hash: {hash}</div>} */}
+      } */}
+          {/* <button
+          type="submit" 
+          disabled={!Boolean(result?.request)}
+          onClick={() => writeContract(result!.request)} 
+              >
+                CreateListing
+              </button> */}
+              <Button type="submit" className="w-full p-2 bg-pink-500 text-white rounded hover:bg-blue-600">
+          {isPending ? 'confirming' : 'Create Listing'}
+        </Button>
+        {hash && <div>Tx hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
         </div>
       </form>
     </div>
