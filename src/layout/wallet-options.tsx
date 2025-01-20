@@ -99,7 +99,7 @@ function WalletOptions() {
               Disconnect Wallet
             </button>
             <div style={balanceStyle}>
-            {/* {selectedConnector && <div>{selectedConnector.name}</div>} */}
+            {selectedConnector && <div>{selectedConnector.name}</div>}
             {/* <br /> */}
             Balance: $CLANKBNB {balance ? balance.toString() : 'Loading balance...'}
             </div>

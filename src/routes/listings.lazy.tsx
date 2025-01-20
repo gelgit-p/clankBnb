@@ -91,6 +91,8 @@ function ListingsPage() {
     location: '',
   })
 
+  console.log(filters)
+
   const nextImage = (listingId: number) => {
     const listing = listings.find((l) => l.id === listingId)
     if (!listing) return
