@@ -52,7 +52,7 @@ function RouteComponent() {
   // const [location, setLocation] = useState('')
   const [images, setImages] = useState<string[]>([]);
   const [newAmenity, setNewAmenity] = useState('');
-  const { address, isConnected } = useAccount()
+  const { address } = useAccount()
   const [amenities, setAmenities] = useState<string[]>([
     'High-Speed WiFi',
     'Smart Home Features',
@@ -61,7 +61,6 @@ function RouteComponent() {
 
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
