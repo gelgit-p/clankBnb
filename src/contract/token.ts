@@ -1,4 +1,4 @@
-0x121C1344bb936dC50fecc6B1688AdefAad3F39F2
+// 0x121C1344bb936dC50fecc6B1688AdefAad3F39F2
 
 export const wagmiTokenConfig = {
     address: '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2',

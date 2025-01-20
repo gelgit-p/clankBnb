@@ -23,9 +23,6 @@ function WalletOptions() {
     args: addresses.map(address => address.startsWith('0x') ? address : `0x${address}`) as [`0x${string}`],
     // addresses.map(address => address.startsWith('0x') ? address : `0x${address}`),
   });
-  console.log(balance, 
-    'log balance'
-  )
   // const fetchBalances = async (addresses: string[]) => {
   //   const balances = await Promise.all(
   //     addresses.map(async (address) =>

@@ -13,15 +13,17 @@ import { useState } from 'react'
 import { Bath, Bed, Heart, MapPin, Ruler, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from '@/components/ui/select'
+// import { Input } from '@/components/ui/input'
+import { useReadContract } from 'wagmi'
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import { wagmiContractConfig } from '@/contract/contract'
 
 // Dummy data
 const listings = [
@@ -91,7 +93,33 @@ function ListingsPage() {
     location: '',
   })
 
-  console.log(filters)
+  console.log(filters, setFilters)
+
+  // const Home = () => {
+  //   const {data, error, isPending} = useReadContract({
+  //     ...wagmiContractConfig,
+  //     functionName: 'getBalance',  
+  //     args: ['0x...'],
+  //   });
+  
+  //   return (
+  //     <div>
+  //       {isLoading && <p>Loading...</p>}
+  //       {error && <p>Error: {error.message}</p>}
+  //       {data && <p>Balance: {data}</p>}
+  //     </div>
+  //   );
+  // };
+  
+
+
+  const {data: getlistings, error, isPending} = useReadContract({
+    ...wagmiContractConfig,
+    // address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    functionName: 'getAllListing',
+  })
+
+  console.log(getlistings, 'result')
 
   const nextImage = (listingId: number) => {
     const listing = listings.find((l) => l.id === listingId)
@@ -115,6 +143,9 @@ function ListingsPage() {
     }))
   }
 
+
+
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white p-8">
       <div className="max-w-7xl mx-auto">
@@ -129,8 +160,8 @@ function ListingsPage() {
         </div>
 
         {/* Filters */}
-        <Card className="p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* <Card className="p-6 mb-8"> */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="text-sm font-medium mb-2 block">
                 Price Range
@@ -201,8 +232,8 @@ function ListingsPage() {
                 }
               />
             </div>
-          </div>
-        </Card>
+          </div> */}
+        {/* </Card> */}
 
         {/* Listings Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

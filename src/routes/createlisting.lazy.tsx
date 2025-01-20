@@ -106,6 +106,8 @@ function RouteComponent() {
         console.error('title is missing');
         return;
       }
+
+      console.log(formData, 'form data');
       // const tokenIdValue = parseInt(tokenId.toString());
       writeContract({
         ...wagmiContractConfig,
@@ -334,7 +336,6 @@ function RouteComponent() {
           <Button  type="button" variant="outline">
             Cancel
           </Button>
-
       {/* onClick={() => 
         writeContract({ 
           listingabi,
