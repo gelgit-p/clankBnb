@@ -30,10 +30,19 @@ function RootComponent() {
                          </Button>
                        </Link>
             )} */}
+            <Link to="/listings">
+              <Button variant="outline">Browse Listings</Button>
+            </Link>
              <Link to="/createlisting">
                          <Button variant="outline" className="flex items-center gap-2">
                            <Plus className="h-4 w-4" />
                            List Property
+                         </Button>
+                       </Link>
+                       <Link to="/createlisting">
+                         <Button variant="outline" className="flex items-center gap-2">
+                           <Plus className="h-4 w-4" />
+                           My Listings
                          </Button>
                        </Link>
           <Link to="/roadmap">
