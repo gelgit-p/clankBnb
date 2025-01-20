@@ -1,4 +1,4 @@
-import { wagmiContractConfig } from '@/contract/contract';
+import { wagmiTokenConfig } from '@/contract/token';
 import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
 
@@ -9,21 +9,16 @@ function WalletOptions() {
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
   const { disconnect } = useDisconnect();
-  // const { data } = useBalance({
-  //   address: account.address,
-  // })
-  // const {balance} = useBalance({
-  //   address: '0x121C1344bb936dC50fecc6B1688AdefAad3F39F2',
-  //   token: tokenAddress
-  // })
+  // const navigate = useNavigate();
+
+  const handleDisconnect = () => {
+    disconnect();
+    // navigate('/');
+  };
   console.log(account.address, 'accountAddress')
   const addresses = account.address ? [account.address] : [];
-  // const balance = useBalance({
-  //   address: account.address,
-  //   token: tokenAddress
-  // })
   const { data: balance } = useReadContract({
-    ...wagmiContractConfig,
+    ...wagmiTokenConfig,
     functionName: 'balanceOf',
     args: addresses.map(address => address.startsWith('0x') ? address : `0x${address}`) as [`0x${string}`],
     // addresses.map(address => address.startsWith('0x') ? address : `0x${address}`),
@@ -92,7 +87,8 @@ function WalletOptions() {
         <>
           <button
               type="button"
-              onClick={() => disconnect()}
+              onClick={handleDisconnect}
+              // onClick={() => disconnect()}
               style={buttonStyle}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = buttonHoverStyle.backgroundColor)}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor)}
@@ -101,12 +97,13 @@ function WalletOptions() {
             </button>
             <div style={balanceStyle}>
             {selectedConnector && <div>{selectedConnector.name}</div>}
-            <br />
+            {/* <br /> */}
             Balance: $CLANKBNB {balance ? balance.toString() : 'Loading balance...'}
             </div>
-          {/* <div>
-            chainId: {account.chainId}
-          </div> */}
+          <div>
+            {/* selectedId: {account} */}
+            status: {account.status}
+          </div>
         </>
       ) : (
         <div>
