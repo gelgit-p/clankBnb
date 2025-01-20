@@ -1,4 +1,4 @@
-import toast, { ToastOptions } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 type ToastType = 'success' | 'error';
 
