@@ -1,4 +1,3 @@
-import { wagmiContractConfig } from '@/contract/contract';
 import { wagmiTokenConfig } from '@/contract/token';
 import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useReadContract } from 'wagmi'
