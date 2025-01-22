@@ -3,7 +3,7 @@ import { useEffect, useState }  from 'react'
 import { Bath, Bed, Heart, MapPin, Ruler, Share2, Users} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
 
 // // Dummy data
 // const listings = [
@@ -63,6 +63,7 @@ export const Route = createLazyFileRoute('/listings')({
 })
 
 function ListingsPage() {
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchAllListings()
@@ -105,7 +106,7 @@ function ListingsPage() {
     try {
          // Loading.circle()
     // const res = await quotesRequests.getAllQuotes()
-    const res = await fetch("http://localhost:8080/api/v1/listing")
+    const res = await fetch("https://clankbnb.onrender.com/api/v1/listing/")
     // if (!data.success) {
     //   Loading.remove()
     //   return Notify.failure(res.message)
@@ -226,6 +227,15 @@ function ListingsPage() {
     }))
   }
 
+  const handleBookNow = (listing: typeof listings[0]) => {
+    navigate({
+      to: '/',
+      search: { selectedListingId: listing.id },
+    })
+    // navigate('/', { state: { selectedListing: listing } });
+  };
+
+
 
 
 
@@ -342,8 +352,14 @@ function ListingsPage() {
                     </span>
                   ))}
                 </div>
+                <Button 
+                  className="w-full"
+                  onClick={() => handleBookNow(listing)}
+                >
+                  Book Now
+                </Button>
 
-                <Button className="w-full">Book Now</Button>
+                {/* <Button className="w-full">Book Now</Button> */}
               </div>
             </Card>
           ))}

@@ -18,7 +18,7 @@ function RootComponent() {
   return (
     <React.Fragment>
       <div className="navbar bg-gradient-to-r from-pink-50 to-pink-50 p-4 shadow-md flex items-center justify-between">
-      <Link to="/" className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
+      <Link to="/listings" className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
             Clankbnb
           </Link>
           <div className="flex gap-4">
