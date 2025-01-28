@@ -30,7 +30,7 @@ function RootComponent() {
                          </Button>
                        </Link>
             )} */}
-            <Link to="/listings">
+            <Link to="/listing">
               <Button variant="outline">Browse Listings</Button>
             </Link>
              <Link to="/createlisting">

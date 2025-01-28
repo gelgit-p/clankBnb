@@ -13,12 +13,12 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ListingIndexImport } from './routes/listing/index'
 
 // Create Virtual Routes
 
 const TokenomicsLazyImport = createFileRoute('/tokenomics')()
 const RoadmapLazyImport = createFileRoute('/roadmap')()
-const ListingsLazyImport = createFileRoute('/listings')()
 const HomepageLazyImport = createFileRoute('/homepage')()
 const CreatelistingLazyImport = createFileRoute('/createlisting')()
 const IndexLazyImport = createFileRoute('/')()
@@ -37,12 +37,6 @@ const RoadmapLazyRoute = RoadmapLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/roadmap.lazy').then((d) => d.Route))
 
-const ListingsLazyRoute = ListingsLazyImport.update({
-  id: '/listings',
-  path: '/listings',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/listings.lazy').then((d) => d.Route))
-
 const HomepageLazyRoute = HomepageLazyImport.update({
   id: '/homepage',
   path: '/homepage',
@@ -60,6 +54,12 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ListingIndexRoute = ListingIndexImport.update({
+  id: '/listing/',
+  path: '/listing/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -86,13 +86,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomepageLazyImport
       parentRoute: typeof rootRoute
     }
-    '/listings': {
-      id: '/listings'
-      path: '/listings'
-      fullPath: '/listings'
-      preLoaderRoute: typeof ListingsLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/roadmap': {
       id: '/roadmap'
       path: '/roadmap'
@@ -107,6 +100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TokenomicsLazyImport
       parentRoute: typeof rootRoute
     }
+    '/listing/': {
+      id: '/listing/'
+      path: '/listing'
+      fullPath: '/listing'
+      preLoaderRoute: typeof ListingIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -116,18 +116,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/createlisting': typeof CreatelistingLazyRoute
   '/homepage': typeof HomepageLazyRoute
-  '/listings': typeof ListingsLazyRoute
   '/roadmap': typeof RoadmapLazyRoute
   '/tokenomics': typeof TokenomicsLazyRoute
+  '/listing': typeof ListingIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/createlisting': typeof CreatelistingLazyRoute
   '/homepage': typeof HomepageLazyRoute
-  '/listings': typeof ListingsLazyRoute
   '/roadmap': typeof RoadmapLazyRoute
   '/tokenomics': typeof TokenomicsLazyRoute
+  '/listing': typeof ListingIndexRoute
 }
 
 export interface FileRoutesById {
@@ -135,9 +135,9 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/createlisting': typeof CreatelistingLazyRoute
   '/homepage': typeof HomepageLazyRoute
-  '/listings': typeof ListingsLazyRoute
   '/roadmap': typeof RoadmapLazyRoute
   '/tokenomics': typeof TokenomicsLazyRoute
+  '/listing/': typeof ListingIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -146,25 +146,25 @@ export interface FileRouteTypes {
     | '/'
     | '/createlisting'
     | '/homepage'
-    | '/listings'
     | '/roadmap'
     | '/tokenomics'
+    | '/listing'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/createlisting'
     | '/homepage'
-    | '/listings'
     | '/roadmap'
     | '/tokenomics'
+    | '/listing'
   id:
     | '__root__'
     | '/'
     | '/createlisting'
     | '/homepage'
-    | '/listings'
     | '/roadmap'
     | '/tokenomics'
+    | '/listing/'
   fileRoutesById: FileRoutesById
 }
 
@@ -172,18 +172,18 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   CreatelistingLazyRoute: typeof CreatelistingLazyRoute
   HomepageLazyRoute: typeof HomepageLazyRoute
-  ListingsLazyRoute: typeof ListingsLazyRoute
   RoadmapLazyRoute: typeof RoadmapLazyRoute
   TokenomicsLazyRoute: typeof TokenomicsLazyRoute
+  ListingIndexRoute: typeof ListingIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   CreatelistingLazyRoute: CreatelistingLazyRoute,
   HomepageLazyRoute: HomepageLazyRoute,
-  ListingsLazyRoute: ListingsLazyRoute,
   RoadmapLazyRoute: RoadmapLazyRoute,
   TokenomicsLazyRoute: TokenomicsLazyRoute,
+  ListingIndexRoute: ListingIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -199,9 +199,9 @@ export const routeTree = rootRoute
         "/",
         "/createlisting",
         "/homepage",
-        "/listings",
         "/roadmap",
-        "/tokenomics"
+        "/tokenomics",
+        "/listing/"
       ]
     },
     "/": {
@@ -213,14 +213,14 @@ export const routeTree = rootRoute
     "/homepage": {
       "filePath": "homepage.lazy.tsx"
     },
-    "/listings": {
-      "filePath": "listings.lazy.tsx"
-    },
     "/roadmap": {
       "filePath": "roadmap.lazy.tsx"
     },
     "/tokenomics": {
       "filePath": "tokenomics.lazy.tsx"
+    },
+    "/listing/": {
+      "filePath": "listing/index.tsx"
     }
   }
 }

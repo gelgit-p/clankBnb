@@ -8,7 +8,7 @@
 //   return <div>Hello "/"!</div>
 // }
 
-import { createLazyFileRoute, useLocation, useNavigate } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import {
   ArrowLeft,
@@ -66,61 +66,8 @@ export const Route = createLazyFileRoute('/')({
 function RouteComponent() {
   const { status } = useAccount()
   const PRICE_PER_NIGHT = 0.0452 // Price in USD
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [selectedListing, setSelectedListing] = useState(location.state?.key || null);
-
-  console.log(selectedListing, 'return listing')
-  // useEffect(() => {
-  //   if (location.state?.selectedListing) {
-  //     setSelectedListing(location.state.selectedListing);
-  //     // Reset image index when listing changes
-  //     setCurrentImage(0);
-  //   }
-  // }, [location.state]);
-  useEffect(() => {
-    if (selectedListing) {
-      // Reset image index when listing changes
-      setCurrentImage(0);
-    }
-  }, [selectedListing]);
-
-  const fetchListing = async (id: any) => {
-    try {
-      // Loading.circle()
- // const res = await quotesRequests.getAllQuotes()
- const res = await fetch(`https://clankbnb.onrender.com/api/v1/listing/${id}`)
- // if (!data.success) {
- //   Loading.remove()
- //   return Notify.failure(res.message)
- const listings_data = await res.json();
- // console.log(listings_data, 'find listings item')
- setSelectedListing(listings_data)
-
- // if(res.status === 200) {
- //   setListings(res.data)
- // } else {
- //   console.error('Failed to fetch listings')
- // }
- // console.log(res)
- // // }
- // if (!res.) {
- //   // Loading.remove()
- //   // return Notify.failure(res.message)
- // }
- // console.log(res.data, 'RESPONSE')
-
- // Loading.remove()
- // setListings(res.data)
- // console.log('quotes', res.data)
-
- } catch(error) {
-   console.error('error fetching listings', error)
- }
-  }
 
   const [currentImage, setCurrentImage] = useState(0)
-  // const [selectedListing, setSelectedListing] = useState([]);
   const [selectedDate, setSelectedDate] = useState<{
     checkIn: Date | null
     checkOut: Date | null
